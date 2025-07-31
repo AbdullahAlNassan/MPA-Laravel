@@ -4,7 +4,14 @@
     <title>Contact</title>
 </head>
 <body>
-    <h1>Contactpagina</h1>
-    <a href="/">Home</a> | <a href="/about">Over ons</a>
+    @extends('layout')
+
+    @section('title', 'Contact')
+
+    @section('content')
+        <h2>Contactpagina</h2>
+        <p>Neem gerust contact met ons op. (Straks kun je hier een formulier maken.)</p>
+    @endsection
+
 </body>
 </html>
