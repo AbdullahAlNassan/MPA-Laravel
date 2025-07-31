@@ -1,23 +1,23 @@
 @extends('layout')
 
-@section('title', 'Liedjes')
+@section('title', 'Boeken')
 
 @section('content')
-    <h2>Liedjes Overzicht</h2>
+    <h2>Boeken Overzicht</h2>
     <table>
         <thead>
             <tr>
                 <th>Titel</th>
-                <th>Artiest</th>
-                <th>Duur (seconden)</th>
+                <th>Auteur</th>
+                <th>Pagina&apos;s</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($songs as $song)
+            @foreach($books as $book)
                 <tr>
-                    <td>{{ $song->title }}</td>
-                    <td>{{ $song->artist }}</td>
-                    <td>{{ $song->duration }}</td>
+                    <td>{{ $book->title }}</td>
+                    <td>{{ $book->author }}</td>
+                    <td>{{ $book->pages }}</td>
                 </tr>
             @endforeach
         </tbody>
