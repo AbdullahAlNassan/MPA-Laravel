@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    //
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
-        return view('books.index', compact('books'));
+        $q = $request->input('q');
+
+        $books = Book::query()
+            ->when($q, function ($query) use ($q) {
+                $query->where(function ($sub) use ($q) {
+                    $sub->where('title', 'like', "%{$q}%")
+                        ->orWhere('author', 'like', "%{$q}%");
+                });
+            })
+            ->orderBy('title')
+            ->paginate(10)
+            ->appends(request()->query());
+
+        return view('books.index', compact('books', 'q'));
     }
 }
