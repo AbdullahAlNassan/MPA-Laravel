@@ -24,4 +24,9 @@ class BookController extends Controller
 
         return view('books.index', compact('books', 'q'));
     }
+
+    public function show(Book $book) // implicit model binding
+    {
+        return view('books.show', compact('book'));
+    }
 }

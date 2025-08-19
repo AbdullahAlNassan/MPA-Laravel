@@ -15,6 +15,7 @@
             <a href="./">Home</a>
             <a href="./about">Over ons</a>
             <a href="./contact">Contact</a>
+            <a href="./books">Boeken</a>
         </nav>
     </header>
     <main>
