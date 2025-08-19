@@ -12,9 +12,9 @@
     <header>
         <h1>MPA Jukebox</h1>
         <nav>
-            <a href="/">Home</a>
-            <a href="/about">Over ons</a>
-            <a href="/contact">Contact</a>
+            <a href="./">Home</a>
+            <a href="./about">Over ons</a>
+            <a href="./contact">Contact</a>
         </nav>
     </header>
     <main>
