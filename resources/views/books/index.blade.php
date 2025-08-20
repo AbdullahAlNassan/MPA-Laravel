@@ -5,6 +5,8 @@
 @section('content')
     <h2>Boeken</h2>
 
+    <a href="{{ route('books.create') }}">+ Nieuw boek</a>
+
     <form method="GET" action="{{ url('/books') }}" style="margin-bottom:1rem;">
         <input type="text" name="q" value="{{ $q }}" placeholder="Zoek op titel of auteur">
         <button type="submit">Zoeken</button>
