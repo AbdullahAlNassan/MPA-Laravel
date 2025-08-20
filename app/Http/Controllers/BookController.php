@@ -25,6 +25,27 @@ class BookController extends Controller
         return view('books.index', compact('books', 'q'));
     }
 
+    public function create()
+    {
+        return view('books.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'title'          => ['required','string','max:255'],
+            'author'         => ['required','string','max:255'],
+            'published_year' => ['nullable','integer','between:1500,2100'],
+            'pages'          => ['nullable','integer','min:1','max:10000'],
+        ]);
+
+        $book = \App\Models\Book::create($data);
+
+        return redirect()
+            ->route('books.show', $book)
+            ->with('status', 'Boek succesvol toegevoegd!');
+    }
+
     public function show(Book $book) // implicit model binding
     {
         return view('books.show', compact('book'));
