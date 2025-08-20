@@ -1,0 +1,43 @@
+{{-- Verwacht: $book (optioneel) --}}
+@php
+  $isEdit = isset($book);
+@endphp
+
+@if ($errors->any())
+  <div class="alert-error" style="margin-bottom:1rem;">
+    <strong>Er ging iets mis:</strong>
+    <ul>
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
+
+<div>
+  <label for="title">Titel *</label><br>
+  <input id="title" name="title" type="text"
+         value="{{ old('title', $isEdit ? $book->title : '') }}">
+  @error('title') <div class="field-error">{{ $message }}</div> @enderror
+</div>
+
+<div>
+  <label for="author">Auteur *</label><br>
+  <input id="author" name="author" type="text"
+         value="{{ old('author', $isEdit ? $book->author : '') }}">
+  @error('author') <div class="field-error">{{ $message }}</div> @enderror
+</div>
+
+<div>
+  <label for="published_year">Jaar</label><br>
+  <input id="published_year" name="published_year" type="number"
+         value="{{ old('published_year', $isEdit ? $book->published_year : '') }}">
+  @error('published_year') <div class="field-error">{{ $message }}</div> @enderror
+</div>
+
+<div>
+  <label for="pages">Pagina's</label><br>
+  <input id="pages" name="pages" type="number"
+         value="{{ old('pages', $isEdit ? $book->pages : '') }}">
+  @error('pages') <div class="field-error">{{ $message }}</div> @enderror
+</div>
