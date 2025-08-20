@@ -33,10 +33,10 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title'          => ['required','string','max:255'],
-            'author'         => ['required','string','max:255'],
-            'published_year' => ['nullable','integer','between:1500,2100'],
-            'pages'          => ['nullable','integer','min:1','max:10000'],
+            'title' => ['required', 'string', 'max:255'],
+            'author' => ['required', 'string', 'max:255'],
+            'published_year' => ['nullable', 'integer', 'between:1500,2100'],
+            'pages' => ['nullable', 'integer', 'min:1', 'max:10000'],
         ]);
 
         $book = \App\Models\Book::create($data);
@@ -49,5 +49,35 @@ class BookController extends Controller
     public function show(Book $book) // implicit model binding
     {
         return view('books.show', compact('book'));
+    }
+
+    public function edit(Book $book)
+    {
+        return view('books.edit', compact('book'));
+    }
+
+    public function update(Request $request, Book $book)
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'author' => ['required', 'string', 'max:255'],
+            'published_year' => ['nullable', 'integer', 'between:1500,2100'],
+            'pages' => ['nullable', 'integer', 'min:1', 'max:10000'],
+        ]);
+
+        $book->update($data);
+
+        return redirect()
+            ->route('books.show', $book)
+            ->with('status', 'Boek bijgewerkt.');
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+
+        return redirect()
+            ->route('books.index')
+            ->with('status', 'Boek verwijderd.');
     }
 }

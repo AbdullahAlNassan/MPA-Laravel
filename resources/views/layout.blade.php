@@ -19,6 +19,10 @@
         </nav>
     </header>
     <main>
+        @if(session('status'))
+          <div class="alert-success">{{ session('status') }}</div>
+        @endif
+
         @yield('content')
     </main>
     <footer>
