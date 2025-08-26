@@ -23,6 +23,14 @@
     <input type="text" name="author"   value="{{ $author }}"    placeholder="Filter op auteur">
     <input type="number" name="year_min" value="{{ $minYr }}"   placeholder="Jaar vanaf">
     <input type="number" name="year_max" value="{{ $maxYr }}"   placeholder="Jaar t/m">
+    <select name="genre">
+      <option value="">— Alle genres —</option>
+      @foreach($genres as $g)
+        <option value="{{ $g->id }}" {{ (string)$genre === (string)$g->id ? 'selected' : '' }}>
+          {{ $g->name }}
+        </option>
+      @endforeach
+    </select>
     <button type="submit">Filter</button>
     <a href="{{ url('/books') }}">Reset</a>
   </form>
@@ -35,6 +43,7 @@
           <th>{!! sort_link('author','Auteur',$sort,$dir) !!}</th>
           <th>{!! sort_link('published_year','Jaar',$sort,$dir) !!}</th>
           <th>{!! sort_link('pages','Pagina\'s',$sort,$dir) !!}</th>
+          <th>Genre</th>
           <th>Acties</th>
         </tr>
       </thead>
@@ -45,6 +54,7 @@
             <td>{{ $book->author }}</td>
             <td>{{ $book->published_year ?? '—' }}</td>
             <td>{{ $book->pages ?? '—' }}</td>
+            <td>{{ $book->genre->name ?? '—' }}</td>
             <td>
               <a href="{{ route('books.edit', $book) }}">Bewerken</a>
               <form method="POST" action="{{ route('books.destroy', $book) }}" style="display:inline"

@@ -13,6 +13,7 @@ class BookController extends Controller
         $author= $request->input('author');
         $minYr = $request->input('year_min');
         $maxYr = $request->input('year_max');
+         $genre  = $request->input('genre');
 
         // veilige sort-parameters (whitelist)
         $sort  = $request->input('sort', 'title');           // default
@@ -23,6 +24,7 @@ class BookController extends Controller
         if (!in_array($dir,  $allowDir))  $dir  = 'asc';
 
         $books = \App\Models\Book::query()
+            ->with('genre')
             ->when($q, function ($qbuilder) use ($q) {
                 $qbuilder->where(function ($sub) use ($q) {
                     $sub->where('title', 'like', "%{$q}%")
@@ -36,7 +38,11 @@ class BookController extends Controller
             ->paginate(10)
             ->appends($request->query()); // behoud filters/zoekterm bij paginatie
 
-        return view('books.index', compact('books','q','author','minYr','maxYr','sort','dir'));
+        $genres = \App\Models\Genre::orderBy('name')->get(['id','name']);
+
+        return view('books.index', compact(
+    'books','q','author','minYr','maxYr','sort','dir','genre','genres'
+));
     }
 
     public function create()
