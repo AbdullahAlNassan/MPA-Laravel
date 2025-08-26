@@ -9,20 +9,34 @@ class BookController extends Controller
 {
     public function index(Request $request)
     {
-        $q = $request->input('q');
+        $q     = $request->input('q');
+        $author= $request->input('author');
+        $minYr = $request->input('year_min');
+        $maxYr = $request->input('year_max');
 
-        $books = Book::query()
-            ->when($q, function ($query) use ($q) {
-                $query->where(function ($sub) use ($q) {
+        // veilige sort-parameters (whitelist)
+        $sort  = $request->input('sort', 'title');           // default
+        $dir   = $request->input('dir', 'asc');              // default
+        $allowCols = ['title','author','published_year','pages'];
+        $allowDir  = ['asc','desc'];
+        if (!in_array($sort, $allowCols)) $sort = 'title';
+        if (!in_array($dir,  $allowDir))  $dir  = 'asc';
+
+        $books = \App\Models\Book::query()
+            ->when($q, function ($qbuilder) use ($q) {
+                $qbuilder->where(function ($sub) use ($q) {
                     $sub->where('title', 'like', "%{$q}%")
                         ->orWhere('author', 'like', "%{$q}%");
                 });
             })
-            ->orderBy('title')
+            ->when($author, fn($qb) => $qb->where('author','like',"%{$author}%"))
+            ->when($minYr, fn($qb) => $qb->where('published_year','>=',$minYr))
+            ->when($maxYr, fn($qb) => $qb->where('published_year','<=',$maxYr))
+            ->orderBy($sort, $dir)
             ->paginate(10)
-            ->appends(request()->query());
+            ->appends($request->query()); // behoud filters/zoekterm bij paginatie
 
-        return view('books.index', compact('books', 'q'));
+        return view('books.index', compact('books','q','author','minYr','maxYr','sort','dir'));
     }
 
     public function create()
