@@ -23,7 +23,7 @@ body {
 /* ===== Layout containers ===== */
 header, main, footer { width: 100%; }
 .container {
-  max-width: 1000px;
+  max-width: 1700px;
   margin: 0 auto;
   padding: 1.25rem;
 }
@@ -189,3 +189,4 @@ footer {
   border-top: 1px solid #e5e7eb;
 }
 
+.btn-primary, .btn { background: var(--primary); color:#fff; }

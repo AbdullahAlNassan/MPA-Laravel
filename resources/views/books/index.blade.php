@@ -44,9 +44,14 @@
   @if($books->count())
     <div class="grid">
       @foreach($books as $book)
+        @php
+          $cover = $book->cover_path
+            ? asset('storage/'.$book->cover_path)
+            : ($book->cover_url ?: 'https://via.placeholder.com/480x680?text=Book');
+        @endphp
         <article class="card">
           <img class="card-cover"
-               src="{{ $book->cover_url ?: 'https://via.placeholder.com/480x680?text=Book' }}"
+               src="{{ $cover }}"
                alt="Cover van {{ $book->title }}">
           <div class="card-body">
             <h3 class="card-title">
@@ -57,7 +62,6 @@
               @if($book->published_year) {{ $book->published_year }} • @endif
               @if($book->pages) {{ $book->pages }} pag. @endif
             </p>
-
             <div class="card-actions">
               <a class="btn btn-ghost" href="{{ route('books.show', $book) }}">Bekijken</a>
               <a class="btn btn-secondary" href="{{ route('books.edit', $book) }}">Bewerken</a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -58,14 +59,20 @@ class BookController extends Controller
             'author'         => ['required','string','max:255'],
             'published_year' => ['nullable','integer','between:1500,2100'],
             'pages'          => ['nullable','integer','min:1','max:10000'],
-            'cover_url'      => ['nullable','url','max:2048'], // nieuw
+            'cover_url'      => ['nullable','url','max:2048'],
+            'cover_file'     => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
+            'genre_id'       => ['nullable','exists:genres,id'],
         ]);
 
-        $book = \App\Models\Book::create($data);
+        if ($request->hasFile('cover_file')) {
+            $path = $request->file('cover_file')->store('covers', 'public');
+            $data['cover_path'] = $path;
+            // $data['cover_url'] = null; // optioneel
+        }
 
-        return redirect()
-            ->route('books.show', $book)
-            ->with('status', 'Boek succesvol toegevoegd!');
+        $book = Book::create($data);
+
+        return redirect()->route('books.show', $book)->with('status', 'Boek succesvol toegevoegd!');
     }
 
     public function show(Book $book) // implicit model binding
@@ -85,18 +92,29 @@ class BookController extends Controller
             'author'         => ['required','string','max:255'],
             'published_year' => ['nullable','integer','between:1500,2100'],
             'pages'          => ['nullable','integer','min:1','max:10000'],
-            'cover_url'      => ['nullable','url','max:2048'], // nieuw
+            'cover_url'      => ['nullable','url','max:2048'],
+            'cover_file'     => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
+            'genre_id'       => ['nullable','exists:genres,id'],
         ]);
+
+        if ($request->hasFile('cover_file')) {
+            if ($book->cover_path && Storage::disk('public')->exists($book->cover_path)) {
+                Storage::disk('public')->delete($book->cover_path);
+            }
+            $data['cover_path'] = $request->file('cover_file')->store('covers', 'public');
+            // $data['cover_url'] = null; // optioneel
+        }
 
         $book->update($data);
 
-        return redirect()
-            ->route('books.show', $book)
-            ->with('status', 'Boek bijgewerkt.');
+        return redirect()->route('books.show', $book)->with('status', 'Boek bijgewerkt.');
     }
 
     public function destroy(Book $book)
     {
+        if ($book->cover_path && Storage::disk('public')->exists($book->cover_path)) {
+            Storage::disk('public')->delete($book->cover_path);
+        }
         $book->delete();
 
         return redirect()

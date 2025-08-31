@@ -5,7 +5,7 @@
 @section('content')
   <h2>Boek bewerken</h2>
 
-  <form method="POST" action="{{ route('books.update', $book) }}">
+  <form method="POST" action="{{ route('books.update', $book) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     @include('books._form', ['book' => $book])

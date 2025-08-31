@@ -3,8 +3,13 @@
 @section('title', $book->title)
 
 @section('content')
+  @php
+    $cover = $book->cover_path
+      ? asset('storage/'.$book->cover_path)
+      : ($book->cover_url ?: 'https://via.placeholder.com/960x1360?text=Book');
+  @endphp
   <div class="card" style="max-width:900px; margin:0 auto;">
-    <img class="card-cover" src="{{ $book->cover_url ?: 'https://via.placeholder.com/960x1360?text=Book' }}"
+    <img class="card-cover" src="{{ $cover }}"
          alt="Cover van {{ $book->title }}">
     <div class="card-body">
       <a class="btn btn-ghost" href="{{ route('books.index') }}">&larr; Terug</a>

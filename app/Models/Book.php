@@ -9,7 +9,15 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','author','published_year','pages','cover_url'];
+    protected $fillable = [
+        'title',
+        'author',
+        'published_year',
+        'pages',
+        'cover_url',
+        'cover_path',
+        'genre_id'
+    ];
 
     public function genre()
     {

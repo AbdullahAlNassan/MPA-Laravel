@@ -14,7 +14,7 @@
 <body>
     <header>
         <div class="container brand">
-            <h1>MPA Jukebox</h1>
+            <h1>Abdullah Books</h1>
             <nav class="nav">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Home</a>
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Over ons</a>
@@ -38,7 +38,7 @@
     </main>
     <footer>
         <div class="container">
-            &copy; {{ date('Y') }} MPA Jukebox. Gemaakt met Laravel.
+            &copy; {{ date('Y') }} Abdullah Books.
         </div>
     </footer>
 </body>

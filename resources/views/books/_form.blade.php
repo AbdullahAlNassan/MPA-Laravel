@@ -49,3 +49,9 @@
          value="{{ old('cover_url', $isEdit ? $book->cover_url : '') }}">
   @error('cover_url') <div class="field-error">{{ $message }}</div> @enderror
 </div>
+
+<div>
+  <label for="cover_file">Cover upload (jpg/png, optioneel)</label><br>
+  <input id="cover_file" name="cover_file" type="file" accept="image/*">
+  @error('cover_file') <div class="field-error">{{ $message }}</div> @enderror
+</div>
