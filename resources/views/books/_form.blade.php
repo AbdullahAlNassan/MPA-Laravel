@@ -41,3 +41,11 @@
          value="{{ old('pages', $isEdit ? $book->pages : '') }}">
   @error('pages') <div class="field-error">{{ $message }}</div> @enderror
 </div>
+
+<div>
+  <label for="cover_url">Cover URL</label><br>
+  <input id="cover_url" name="cover_url" type="text"
+         placeholder="https://…/cover.jpg"
+         value="{{ old('cover_url', $isEdit ? $book->cover_url : '') }}">
+  @error('cover_url') <div class="field-error">{{ $message }}</div> @enderror
+</div>

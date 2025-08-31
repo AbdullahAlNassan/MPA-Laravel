@@ -26,6 +26,7 @@ class BookSeeder extends Seeder
             'pages'          => 310,
             'published_year' => 1937,
             'genre_id'       => Genre::where('name','Fantasy')->value('id'),
+            'cover_url'      => 'https://via.placeholder.com/240x340?text=De+Hobbit',
         ]);
     }
 }

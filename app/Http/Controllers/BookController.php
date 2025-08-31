@@ -13,7 +13,7 @@ class BookController extends Controller
         $author= $request->input('author');
         $minYr = $request->input('year_min');
         $maxYr = $request->input('year_max');
-         $genre  = $request->input('genre');
+        $genre  = $request->input('genre');
 
         // veilige sort-parameters (whitelist)
         $sort  = $request->input('sort', 'title');           // default
@@ -23,7 +23,7 @@ class BookController extends Controller
         if (!in_array($sort, $allowCols)) $sort = 'title';
         if (!in_array($dir,  $allowDir))  $dir  = 'asc';
 
-        $books = \App\Models\Book::query()
+        $books = Book::query()
             ->with('genre')
             ->when($q, function ($qbuilder) use ($q) {
                 $qbuilder->where(function ($sub) use ($q) {
@@ -34,6 +34,7 @@ class BookController extends Controller
             ->when($author, fn($qb) => $qb->where('author','like',"%{$author}%"))
             ->when($minYr, fn($qb) => $qb->where('published_year','>=',$minYr))
             ->when($maxYr, fn($qb) => $qb->where('published_year','<=',$maxYr))
+            ->when($genre, fn($qb) => $qb->where('genre_id', $genre))
             ->orderBy($sort, $dir)
             ->paginate(10)
             ->appends($request->query()); // behoud filters/zoekterm bij paginatie
@@ -53,10 +54,11 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'author' => ['required', 'string', 'max:255'],
-            'published_year' => ['nullable', 'integer', 'between:1500,2100'],
-            'pages' => ['nullable', 'integer', 'min:1', 'max:10000'],
+            'title'          => ['required','string','max:255'],
+            'author'         => ['required','string','max:255'],
+            'published_year' => ['nullable','integer','between:1500,2100'],
+            'pages'          => ['nullable','integer','min:1','max:10000'],
+            'cover_url'      => ['nullable','url','max:2048'], // nieuw
         ]);
 
         $book = \App\Models\Book::create($data);
@@ -79,10 +81,11 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'author' => ['required', 'string', 'max:255'],
-            'published_year' => ['nullable', 'integer', 'between:1500,2100'],
-            'pages' => ['nullable', 'integer', 'min:1', 'max:10000'],
+            'title'          => ['required','string','max:255'],
+            'author'         => ['required','string','max:255'],
+            'published_year' => ['nullable','integer','between:1500,2100'],
+            'pages'          => ['nullable','integer','min:1','max:10000'],
+            'cover_url'      => ['nullable','url','max:2048'], // nieuw
         ]);
 
         $book->update($data);

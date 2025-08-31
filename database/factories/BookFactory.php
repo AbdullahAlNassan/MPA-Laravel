@@ -12,7 +12,8 @@ class BookFactory extends Factory
             'title'          => $this->faker->sentence(3),
             'author'         => $this->faker->name(),
             'pages'          => $this->faker->numberBetween(100, 800),
-            'published_year' => $this->faker->numberBetween(1950, 2023),
+            'published_year' => $this->faker->numberBetween(1950, 2025),
+            'cover_url'      => 'https://via.placeholder.com/240x340?text=Book',
         ];
     }
 }
