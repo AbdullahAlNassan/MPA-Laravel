@@ -12,10 +12,11 @@
     <header>
         <h1>MPA Jukebox</h1>
         <nav>
-            <a href="./">Home</a>
-            <a href="./about">Over ons</a>
-            <a href="./contact">Contact</a>
-            <a href="./books">Boeken</a>
+          <a href="{{ route('home') }}">Home</a>
+          <a href="{{ route('about') }}">Over ons</a>
+          <a href="{{ route('contact') }}">Contact</a>
+          <a href="{{ route('books.index') }}">Boeken</a>
+          <a href="{{ route('genres.index') }}">Genres</a>
         </nav>
     </header>
     <main>
