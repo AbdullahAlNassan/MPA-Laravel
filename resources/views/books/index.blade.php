@@ -37,6 +37,8 @@
         <button type="submit">Filter</button>
         <a class="btn btn-ghost" href="{{ url('/books') }}">Reset</a>
         <a class="btn btn-secondary" href="{{ route('books.create') }}">+ Nieuw boek</a>
+        {{-- NEW: Snelkoppeling naar favorieten-overzicht --}}
+        <a class="btn btn-ghost" href="{{ route('favorites.index') }}">⭐ Favorieten</a>
       </div>
     </form>
   </div>
@@ -44,11 +46,19 @@
   @if($books->count())
     <div class="grid">
       @foreach($books as $book)
+
+        {{-- NEW: bepaal of dit boek al in de favorieten zit (via sessie) --}}
+        @php
+          $favIds = session('favorites', []);
+          $isFav  = in_array($book->id, $favIds, true);
+        @endphp
+
         @php
           $cover = $book->cover_path
             ? asset('storage/'.$book->cover_path)
             : ($book->cover_url ?: 'https://via.placeholder.com/480x680?text=Book');
         @endphp
+
         <article class="card">
           <img class="card-cover"
                src="{{ $cover }}"
@@ -57,19 +67,44 @@
             <h3 class="card-title">
               <a href="{{ route('books.show', $book) }}">{{ $book->title }}</a>
             </h3>
-            <p class="card-meta">{{ $book->author }}</p>
+
+            {{-- NEW: toon genre-naam als die bestaat (optioneel, mooi voor context) --}}
+            @if(isset($book->genre) && $book->genre)
+              <p class="card-meta">{{ $book->author }} • {{ $book->genre->name }}</p>
+            @else
+              <p class="card-meta">{{ $book->author }}</p>
+            @endif
+
             <p class="card-meta">
               @if($book->published_year) {{ $book->published_year }} • @endif
               @if($book->pages) {{ $book->pages }} pag. @endif
             </p>
+
             <div class="card-actions">
               <a class="btn btn-ghost" href="{{ route('books.show', $book) }}">Bekijken</a>
+
+              {{-- CHANGED: beheerknoppen laten staan (jij als beheerder) --}}
               <a class="btn btn-secondary" href="{{ route('books.edit', $book) }}">Bewerken</a>
               <form method="POST" action="{{ route('books.destroy', $book) }}"
                     onsubmit="return confirm('Verwijderen?');" style="display:inline">
                 @csrf @method('DELETE')
                 <button type="submit">Verwijderen</button>
               </form>
+
+              {{-- NEW: favorieten-knop (toggle op basis van $isFav) --}}
+              @if(!$isFav)
+                <form method="POST" action="{{ route('favorites.store', $book) }}" style="display:inline">
+                  @csrf
+                  <button type="submit" class="btn btn-ghost">⭐ Bewaar als favoriet</button>
+                </form>
+              @else
+                <form method="POST" action="{{ route('favorites.destroy', $book) }}" style="display:inline">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-ghost">★ Verwijderen uit favorieten</button>
+                </form>
+              @endif
+              {{-- END NEW --}}
             </div>
           </div>
         </article>
@@ -83,4 +118,3 @@
     <div class="card"><p>Geen boeken gevonden.</p></div>
   @endif
 @endsection
-

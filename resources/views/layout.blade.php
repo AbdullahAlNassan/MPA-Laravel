@@ -15,6 +15,11 @@
     <header>
         <div class="container brand">
             <h1>Abdullah Books</h1>
+
+            @php
+            // Tel het aantal favorieten in de sessie
+            $favCount = is_array(session('favorites')) ? count(session('favorites')) : 0;
+            @endphp
             <nav class="nav">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Home</a>
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Over ons</a>
@@ -24,6 +29,10 @@
                     class="{{ request()->routeIs('books.*') ? 'is-active' : '' }}">Boeken</a>
                 <a href="{{ route('genres.index') }}"
                     class="{{ request()->routeIs('genres.*') ? 'is-active' : '' }}">Genres</a>
+
+                <a href="{{ route('favorites.index') }}" class="{{ request()->routeIs('favorites.*') ? 'is-active' : '' }}">
+                    Favorieten @if($favCount) ({{ $favCount }}) @endif
+                </a>
             </nav>
         </div>
     </header>

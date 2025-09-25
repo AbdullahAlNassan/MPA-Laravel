@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FavoritesController;
 
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::get('/books/create', [BookController::class, 'create'])->name('books.create'); 
@@ -17,3 +18,7 @@ Route::get('/about',   [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 
+Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
+Route::post('/favorites/{book}', [FavoritesController::class, 'store'])->name('favorites.store');
+Route::delete('/favorites/{book}', [FavoritesController::class, 'destroy'])->name('favorites.destroy');
+Route::post('/favorites/clear', [FavoritesController::class, 'clear'])->name('favorites.clear');

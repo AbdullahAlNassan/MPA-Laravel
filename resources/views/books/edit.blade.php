@@ -13,3 +13,5 @@
     <a href="{{ route('books.show', $book) }}">Annuleren</a>
   </form>
 @endsection
+
+

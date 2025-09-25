@@ -146,7 +146,7 @@ button:active, .btn:active { transform: translateY(1px); }
 
 /* ===== Alerts & errors ===== */
 .alert-success {
-  background: #ecfccb;
+  background: #dbcbfc;
   border: 1px solid #84cc16;
   color: #365314;
   padding: .6rem .9rem;
