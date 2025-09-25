@@ -37,10 +37,18 @@
 
 <div>
   <label for="pages">Pagina's</label><br>
-  <input id="pages" name="pages" type="number"
-         value="{{ old('pages', $isEdit ? $book->pages : '') }}">
+  <input id="price" name="price" type="number" step="0.01" min="0"
+       value="{{ old('price', $isEdit ? $book->price : '') }}">
   @error('pages') <div class="field-error">{{ $message }}</div> @enderror
 </div>
+
+<div>
+  <label for="price">Prijs (€)</label><br>
+  <input id="price" name="price" type="number" step="0.01" min="0"
+         value="{{ old('price', $isEdit ? $book->price : '') }}">
+  @error('price') <div class="field-error">{{ $message }}</div> @enderror
+</div>
+
 
 <div>
   <label for="cover_url">Cover URL</label><br>

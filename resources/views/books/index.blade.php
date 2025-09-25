@@ -77,7 +77,8 @@
 
             <p class="card-meta">
               @if($book->published_year) {{ $book->published_year }} • @endif
-              @if($book->pages) {{ $book->pages }} pag. @endif
+              @if($book->pages) {{ $book->pages }} pag. • @endif
+              @if(!is_null($book->price)) {{ $book->price_formatted }} @endif
             </p>
 
             <div class="card-actions">

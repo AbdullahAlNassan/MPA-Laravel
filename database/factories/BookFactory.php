@@ -14,6 +14,7 @@ class BookFactory extends Factory
             'pages'          => $this->faker->numberBetween(100, 800),
             'published_year' => $this->faker->numberBetween(1950, 2025),
             'cover_url'      => 'https://via.placeholder.com/240x340?text=Book',
+            'price'          => $this->faker->randomFloat(2, 5, 80), // €5.00 - €80.00
         ];
     }
 }

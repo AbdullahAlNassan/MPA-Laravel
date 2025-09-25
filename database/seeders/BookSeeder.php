@@ -25,6 +25,7 @@ class BookSeeder extends Seeder
             'author'         => 'J.R.R. Tolkien',
             'pages'          => 310,
             'published_year' => 1937,
+            'price'          => 19.99,
             'genre_id'       => Genre::where('name','Fantasy')->value('id'),
             'cover_url'      => 'https://via.placeholder.com/240x340?text=De+Hobbit',
         ]);

@@ -59,6 +59,7 @@ class BookController extends Controller
             'author'         => ['required','string','max:255'],
             'published_year' => ['nullable','integer','between:1500,2100'],
             'pages'          => ['nullable','integer','min:1','max:10000'],
+            'price'          => ['nullable','numeric','min:0','max:999999.99'],
             'cover_url'      => ['nullable','url','max:2048'],
             'cover_file'     => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
             'genre_id'       => ['nullable','exists:genres,id'],
@@ -87,28 +88,38 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
+        // 1) Komma → punt (19,99 → 19.99) zodat 'numeric' slaagt en DB 'decimal' goed vult
+        if ($request->filled('price')) {
+            $request->merge(['price' => str_replace(',', '.', $request->input('price'))]);
+        }
+
+        // 2) Valideer ALLE velden die je wilt updaten (zorg dat 'price' erbij staat)
         $data = $request->validate([
             'title'          => ['required','string','max:255'],
             'author'         => ['required','string','max:255'],
             'published_year' => ['nullable','integer','between:1500,2100'],
             'pages'          => ['nullable','integer','min:1','max:10000'],
+            'price'          => ['nullable','numeric','min:0','max:999999.99'],
             'cover_url'      => ['nullable','url','max:2048'],
             'cover_file'     => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
             'genre_id'       => ['nullable','exists:genres,id'],
         ]);
 
+        // 3) Upload (optioneel)
         if ($request->hasFile('cover_file')) {
             if ($book->cover_path && Storage::disk('public')->exists($book->cover_path)) {
                 Storage::disk('public')->delete($book->cover_path);
             }
             $data['cover_path'] = $request->file('cover_file')->store('covers', 'public');
-            // $data['cover_url'] = null; // optioneel
         }
 
+        // 4) Updaten (price zit nu in $data)
         $book->update($data);
 
         return redirect()->route('books.show', $book)->with('status', 'Boek bijgewerkt.');
     }
+
+
 
     public function destroy(Book $book)
     {

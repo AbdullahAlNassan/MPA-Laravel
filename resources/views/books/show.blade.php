@@ -17,6 +17,8 @@
       <p class="card-meta"><strong>Auteur:</strong> {{ $book->author }}</p>
       <p class="card-meta"><strong>Jaar:</strong> {{ $book->published_year ?? '—' }}</p>
       <p class="card-meta"><strong>Pagina's:</strong> {{ $book->pages ?? '—' }}</p>
+      <p class="card-meta"><strong>Prijs:</strong> {{ $book->price_formatted ?? '—' }}</p>
+
 
       <div class="card-actions">
         <a class="btn btn-secondary" href="{{ route('books.edit', $book) }}">Bewerken</a>
